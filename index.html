@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Producto</title>
+
+    <style>
+        /* --- Configuración General --- */
+        /* Reseteo para que todos los navegadores se vean igual */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo general del cuerpo de la página */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f2f5; /* Fondo gris claro */
+            display: flex; /* Centra el contenido */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Alto completo de la pantalla */
+            padding: 2rem; /* Espacio en los bordes */
+        }
+
+        /* --- Contenedor Principal (Todo el diseño) --- */
+        /* Envuelve la tarjeta blanca y la barra de scroll falsa */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* --- Tarjeta Blanca Principal --- */
+        .page-container {
+            flex-grow: 1; /* Ocupa el espacio disponible */
+            background-color: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* Sombrita */
+            overflow: hidden; /* Oculta lo que se salga de la tarjeta */
+            display: flex; /* Para organizar el header, main y footer (uno debajo del otro) */
+            flex-direction: column;
+        }
+
+        /* --- 1. Encabezado (La mancha azul) --- */
+        .main-header {
+            background-color: #0000C8; /* Azul intenso */
+            height: 130px;
+            /* La magia para la forma curva */
+            border-radius: 25px 25px 150px 50px;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between; /* Uno a la izq (buscador) y otro a la der (links) */
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Barra de Búsqueda --- */
+        .search-bar {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botón de envío (lupa) */
+        .search-submit-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-right: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-submit-btn img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.6; /* Un poco transparente */
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            width: 100%;
+        }
+
+        /* --- Navegación Principal --- */
+        .main-nav {
+            display: flex;
+            gap: 12px; /* Espacio entre los botones */
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #333;
+            background-color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        /* Efecto al pasar el mouse */
+        .main-nav a:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px); /* Se eleva un poquito */
+        }
+
+        /* --- 2. Área de Contenido Principal --- */
+        .content-area {
+            flex-grow: 1; /* Ocupa el espacio que sobra entre el header y el footer */
+            display: grid;
+            /* Divide el contenido en 2 columnas (la de la imagen y la de los botones) */
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+            padding: 40px;
+            padding-bottom: 0; /* Pega el contenido al footer */
+        }
+
+        /* --- Columna Izquierda: Imagen PS5 --- */
+        .product-showcase {
+            background-color: #f8f8f8; /* Fondo gris claro para la imagen */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 40px; /* Espacio para que no se pegue al footer azul */
+            max-height: 500px;
+        }
+
+        .product-showcase img {
+            /* Hacemos la imagen grande */
+            max-width: 120%;
+            width: 120%;
+            height: auto;
+            object-fit: contain; /* Para que la imagen no se corte */
+            /* Sombra suave */
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+        }
+
+        /* --- Columna Derecha: Botones --- */
+        .sidebar-actions {
+            display: flex;
+            flex-direction: column; /* Botones uno encima del otro */
+            gap: 20px;
+            margin-bottom: 40px; /* Espacio para que no se pegue al footer azul */
+        }
+
+        /* Botón "COMPRA AHORA" */
+        .buy-now {
+            background-color: #e9e9e9;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s ease;
+            text-decoration: none; /* Quita el subrayado del link */
+        }
+
+        .buy-now:hover {
+            background-color: #dcdcdc;
+        }
+
+        /* Contenedor de los 2 botones azules de abajo */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1; /* Ocupa el espacio que queda */
+        }
+
+        /* Estilo común de los botones azules */
+        .action-btn {
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            flex-grow: 1;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden; /* Para que la imagen de adentro no se salga */
+        }
+        
+        /* Efecto al pasar el mouse */
+        .action-btn:hover {
+            transform: scale(1.03); /* Se agranda un poco */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Botón Logo PlayStation */
+        .ps-logo {
+            background: #003087;
+        }
+        
+        .ps-logo img {
+            width: 45%;
+            filter: brightness(0) invert(1); /* Pone el logo (que es SVG) en blanco */
+        }
+
+        /* Botón Símbolos PlayStation (con tu imagen JPG) */
+        .ps-symbols {
+            background: #001f54;
+        }
+
+        .ps-symbols img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Rellena el botón con la imagen sin deformarla */
+        }
+
+        /* --- 3. Footer (El recuadro azul de abajo) --- */
+        .main-footer {
+            background-color: #0000C8;
+            height: 80px;
+            border-radius: 0 0 25px 25px; /* Bordes redondeados solo abajo */
+        }
+
+        /* --- 4. Barra de Scroll Falsa (A la derecha) --- */
+        .scroll-track {
+            width: 12px;
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            height: 600px; /* Altura fija de adorno */
+            margin-left: 20px;
+            align-self: flex-start;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+
+        <div class="page-container">
+
+            <header class="main-header">
+                
+                <form class="search-bar" action="https://www.google.com/search" method="GET" target="_blank">
+                    <button type="submit" class="search-submit-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm9iZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Im0yMSAyMS00LjMtNC4zIi8+PC9zdmc+" alt="Buscar">
+                    </button>
+                    <input type="text" placeholder="Buscar..." name="q">
+                </form>
+
+                <nav class="main-nav">
+                    <a href="https://www.playstation.com/">comprar</a>
+                    <a href="https://www.playstation.com/">reservas</a>
+                    <a href="https://www.playstation.com/">catalogo</a>
+                    <a href="https://www.playstation.com/">otros</a>
+                </nav>
+            </header>
+
+            <main class="content-area">
+
+                <section class="product-showcase">
+                    <img src="15919100847394.jpg" alt="Consola y Control PlayStation 5">
+                </section>
+
+                <aside class="sidebar-actions">
+                    <a href="https://www.playstation.com/" class="buy-now">COMPRA AHORA</a>
+                    
+                    <div class="action-buttons">
+                        <a href="https://www.playstation.com/" class="action-btn ps-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" alt="Logo PlayStation">
+                        </a>
+                        <a href="https://www.playstation.com/" class="action-btn ps-symbols">
+                            <img src="images.jpg" alt="Símbolos PlayStation">
+                        </a>
+                    </div>
+                </aside>
+
+            </main>
+
+            <footer class="main-footer">
+                </footer>
+
+        </div>
+
+        <div class="scroll-track"></div>
+
+    </div>
+
+</body>
+</html>
