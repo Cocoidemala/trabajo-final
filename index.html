@@ -26,7 +26,6 @@
         }
 
         /* --- Contenedor Principal (Todo el diseño) --- */
-        /* Envuelve la tarjeta blanca y la barra de scroll falsa */
         .page-wrapper {
             display: flex;
             width: 100%;
@@ -52,18 +51,16 @@
             border-radius: 25px 25px 150px 50px;
             padding: 20px 40px;
             display: flex;
-            justify-content: space-between; /* Uno a la izq (auth) y otro a la der (links) */
+            justify-content: space-between; /* Uno a la izq (buscador) y otro a la der (links) */
             align-items: center;
             position: relative;
             z-index: 1;
         }
-        
+
         /* --- Estilos para auth en la izquierda --- */
         .auth-links-left {
             display: flex;
             gap: 10px; /* Espacio entre los dos botones */
-            /* (AÑADIDO) Para centrar verticalmente el "Hola" y el "Salir" */
-            align-items: center; 
         }
 
         .auth-btn-left {
@@ -83,23 +80,29 @@
             color: #0000C8; /* Letras azules */
         }
         
-        /* Efectos hover */
-        .auth-btn-left.btn-login-left:hover {
-            background-color: #ffffff;
-            color: #0000C8;
+        /* Estilo para el botón de "Login" (borde blanco) */
+        .btn-login-left {
+             background-color: transparent;
+             color: #ffffff;
         }
 
+        /* Efectos hover */
         .auth-btn-left.btn-register-left:hover {
             background-color: #f0f0f0;
             border-color: #f0f0f0;
         }
         
-        /* ===== ESTILOS NUEVOS (BIENVENIDA Y SALIR) ===== */
+        .auth-btn-left.btn-login-left:hover {
+            background-color: #ffffff;
+            color: #0000C8;
+        }
+        
+        /* --- ESTILOS DE SESIÓN --- */
         .auth-links-left .welcome-message {
             color: #ffffff;
             font-size: 16px;
             font-weight: bold;
-            margin-right: 15px; /* Espacio antes del botón de salir */
+            margin-right: 15px;
             white-space: nowrap; /* Evita que el nombre se parta */
         }
         
@@ -114,14 +117,12 @@
             color: #c80000; /* Rojo oscuro al pasar el mouse */
             border-color: #ffffff;
         }
-        /* ===== FIN DE ESTILOS NUEVOS ===== */
-
+        /* --- FIN ESTILOS DE SESIÓN --- */
 
         /* --- Navegación Principal --- */
         .main-nav {
             display: flex;
             gap: 12px; /* Espacio entre los botones */
-            align-items: center; /* Centra verticalmente los botones */
         }
 
         .main-nav a {
@@ -133,10 +134,9 @@
             font-size: 14px;
             font-weight: bold;
             transition: all 0.2s ease;
-            white-space: nowrap; /* Evita que el texto se parta en dos líneas */
         }
 
-        /* Efecto al pasar el mouse (botones normales) */
+        /* Efecto al pasar el mouse */
         .main-nav a:hover {
             background-color: #f0f0f0;
             transform: translateY(-2px); /* Se eleva un poquito */
@@ -276,16 +276,14 @@
 
             <header class="main-header">
                 
-                <!-- (NUEVO) Botones de Auth a la izquierda -->
-                <!-- ESTE CONTENEDOR SERÁ MODIFICADO POR JAVASCRIPT -->
-                <div class="auth-links-left">
-                    <!-- ESTOS ENLACES YA ESTÁN CONECTADOS -->
+                <!-- CONTENEDOR DE SESIÓN (se rellena con JS) -->
+                <div class="auth-links-left" id="auth-container">
+                    <!-- Por defecto, muestra esto -->
                     <a href="login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
                     <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
                 </div>
 
-                <!-- Navegación normal a la derecha -->
-                <nav class="main-nav">
+                <nav class="main-nav" id="main-nav">
                     <a href="https://www.playstation.com/">comprar</a>
                     <a href="https://www.playstation.com/">reservas</a>
                     <a href="https://www.playstation.com/">catalogo</a>
@@ -296,24 +294,26 @@
             <main class="content-area">
 
                 <section class="product-showcase">
-                    <!-- Usamos un placeholder para la imagen -->
-                    <img src="https://placehold.co/600x400/f8f8f8/ccc?text=PS5+Image" 
-                         onerror="this.src='https://placehold.co/600x400/f8f8f8/ccc?text=PS5+Image'" 
-                         alt="Consola y Control PlayStation 5">
+                    <!-- Asegúrate de que esta imagen '15919100847394.jpg' exista en tu carpeta -->
+                    <img src="15919100847394.jpg" alt="Consola y Control PlayStation 5" 
+                         onerror="this.src='https://placehold.co/600x400/f8f8f8/ccc?text=PS5+Image'">
                 </section>
 
                 <aside class="sidebar-actions">
-                    <a href="https://www.playstation.com/" class="buy-now">COMPRA AHORA</a>
+                    
+                    <!-- ===== INICIO DE LA MODIFICACIÓN ===== -->
+                    <!-- Este botón ahora apunta a la página de compra -->
+                    <a href="compra.html" class="buy-now">COMPRA AHORA</a>
+                    <!-- ===== FIN DE LA MODIFICACIÓN ===== -->
                     
                     <div class="action-buttons">
                         <a href="https://www.playstation.com/" class="action-btn ps-logo">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" alt="Logo PlayStation">
                         </a>
                         <a href="https://www.playstation.com/" class="action-btn ps-symbols">
-                            <!-- Usamos un placeholder para la imagen -->
-                            <img src="https://placehold.co/300x200/001f54/fff?text=Symbols" 
-                                 onerror="this.src='https://placehold.co/300x200/001f54/fff?text=Symbols'"
-                                 alt="Símbolos PlayStation">
+                            <!-- Asegúrate de que esta imagen 'images.jpg' exista -->
+                            <img src="images.jpg" alt="Símbolos PlayStation"
+                                 onerror="this.src='https://placehold.co/300x150/001f54/fff?text=Symbols'">
                         </a>
                     </div>
                 </aside>
@@ -328,42 +328,30 @@
         <div class="scroll-track"></div>
 
     </div>
-
-    <!-- ===== INICIA SCRIPT DE SESIÓN ===== -->
+    
+    <!-- ===== SCRIPT DE SESIÓN ===== -->
     <script>
-        // Esta función se ejecuta tan pronto como la página termina de cargar
         document.addEventListener('DOMContentLoaded', function() {
-            
-            // 1. Revisa si hay un nombre guardado en la sesión
             const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container'); // Apunta al div de la izquierda
+            const mainNav = document.getElementById('main-nav'); // Apunta a la navegación principal
             
-            // 2. Si SÍ existe un nombre guardado...
             if (userName) {
-                
-                // 3. Busca el contenedor de los botones "Login/Registro"
-                const authContainer = document.querySelector('.auth-links-left');
-                
-                // 4. Borra esos botones y los reemplaza con el mensaje y el botón "Salir"
-                // Usamos "trim()" para limpiar espacios en blanco que pueda tener el nombre
+                // Si hay sesión, muestra saludo y botón "Salir"
                 authContainer.innerHTML = `
                     <span class="welcome-message">Hola, ${userName.trim()}</span>
                     <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
                 `;
                 
-                // 5. Ahora, le da la funcionalidad al nuevo botón "Salir"
                 document.getElementById('logout-btn').addEventListener('click', function(e) {
-                    e.preventDefault(); // Evita que el enlace '#' mueva la página
-                    
-                    // 6. Borra el nombre de la memoria de la sesión
+                    e.preventDefault();
                     sessionStorage.removeItem('userName');
-                    
-                    // 7. Recarga la página. Al recargar, el script no encontrará
-                    // un nombre y volverá a mostrar "Iniciar Sesión" y "Registrarse"
-                    window.location.reload();
+                    window.location.reload(); // Recarga la página para mostrar los botones de login
                 });
+            } else {
+                // Si no hay sesión, los botones de "Iniciar Sesión" y "Registrarse"
+                // ya están en el HTML por defecto, así que no hacemos nada.
             }
-            // 8. Si NO existe un nombre guardado, no hace nada,
-            // y los botones originales de "Iniciar Sesión" y "Registrarse" se quedan visibles.
         });
     </script>
     <!-- ===== TERMINA SCRIPT ===== -->
