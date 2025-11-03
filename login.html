@@ -50,9 +50,9 @@
             /* La magia para la forma curva */
             border-radius: 25px 25px 150px 50px;
             padding: 20px 40px;
-            /* CAMBIO: Solo hay un elemento, lo alineamos a la izquierda */
-            display: flex; /* Aseguramos flexbox */
-            justify-content: flex-start; 
+            /* CAMBIO: Ahora son 2 elementos, los separamos */
+            display: flex; 
+            justify-content: space-between; /* <-- CAMBIO: Uno a cada lado */
             align-items: center;
             position: relative;
             z-index: 1;
@@ -62,6 +62,11 @@
         .auth-links-left {
             display: flex;
             gap: 10px; /* Espacio entre los dos botones */
+        }
+        
+        /* (NUEVO) Contenedor para el botón de la derecha */
+        .auth-links-right {
+             display: flex;
         }
 
         .auth-btn-left {
@@ -81,7 +86,7 @@
             color: #0000C8; /* Letras azules */
         }
         
-        /* CAMBIO: Estilo para el botón de "Login" (borde blanco) */
+        /* Estilo para el botón de "Login" o "Volver" (borde blanco) */
         .btn-login-left {
              background-color: transparent;
              color: #ffffff;
@@ -94,7 +99,6 @@
             border-color: #f0f0f0;
         }
         
-        /* CAMBIO: Hover para el botón de Login */
         .auth-btn-left.btn-login-left:hover {
             background-color: #ffffff;
             color: #0000C8;
@@ -127,7 +131,7 @@
             margin-bottom: 10px;
         }
         
-        /* (NUEVO) Estilo para el mensaje de error */
+        /* Estilo para el mensaje de error */
         .error-message {
             color: #c80000;
             background-color: #ffbaba;
@@ -215,25 +219,24 @@
 
         <div class="page-container">
 
-            <!-- 1. Encabezado (Con botón de Registro) -->
             <header class="main-header">
                 
                 <div class="auth-links-left">
-                    <!-- Este botón te lleva a la página de registro -->
+                    <a href="index.html" class="auth-btn-left btn-login-left">← Volver</a>
+                </div>
+
+                <div class="auth-links-right">
                     <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
                 </div>
 
             </header>
 
-            <!-- 2. Contenido Principal (El Formulario de Login) -->
             <main class="login-area">
                 
-                <!-- CAMBIO: Eliminamos 'action' y 'method' -->
                 <form id="login-form" class="login-form">
                     
                     <h2>Iniciar Sesión</h2>
                     
-                    <!-- (NUEVO) Contenedor para el mensaje de error -->
                     <div id="error-message" class="error-message"></div>
                     
                     <div class="form-group">
@@ -256,56 +259,33 @@
 
             </main>
 
-            <!-- 3. Footer (Idéntico) -->
             <footer class="main-footer">
             </footer>
 
         </div>
 
-        <!-- 4. Barra de Scroll (Idéntica) -->
         <div class="scroll-track"></div>
 
     </div>
 
-    <!-- ===== INICIA SCRIPT ===== -->
     <script>
-        // 1. Busca el formulario por su ID y espera a que el usuario le dé "submit"
         document.getElementById('login-form').addEventListener('submit', function(event) {
-            
-            // 2. Evita que el formulario se envíe de la forma tradicional (recargando la página)
             event.preventDefault();
             
-            // 3. Obtiene los valores de los campos
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
             
-            // --- SIMULACIÓN DE LOGIN ---
-            // En un sitio estático, no podemos verificar usuarios reales sin un servicio externo.
-            // Así que simulamos que CUALQUIER email es válido,
-            // pero la contraseña DEBE SER "12345".
-            
+            // Contraseña de simulación
             if (email && password === "12345") {
-                // ¡Contraseña correcta!
-                
-                // 4. Extraemos el nombre de usuario del email (la parte antes del @)
                 const nombreUsuario = email.split('@')[0];
-                
-                // 5. Guardamos ese "nombre" en la memoria de la sesión
                 sessionStorage.setItem('userName', nombreUsuario);
-                
-                // 6. Redirigimos al usuario a la página principal
                 window.location.href = 'index.html';
-                
             } else {
-                // ¡Contraseña incorrecta!
                 errorMessage.textContent = 'Correo o contraseña incorrectos.';
-                errorMessage.style.display = 'block'; // Muestra el mensaje de error
+                errorMessage.style.display = 'block'; 
             }
         });
     </script>
-    <!-- ===== TERMINA SCRIPT ===== -->
-
-</body>
+    </body>
 </html>
-
