@@ -52,52 +52,54 @@
             border-radius: 25px 25px 150px 50px;
             padding: 20px 40px;
             display: flex;
-            justify-content: space-between; /* Uno a la izq (buscador) y otro a la der (links) */
+            justify-content: space-between; /* Uno a la izq (botones) y otro a la der (links) */
             align-items: center;
             position: relative;
             z-index: 1;
         }
 
-        /* --- Barra de Búsqueda --- */
-        .search-bar {
+        /* --- (Estilos de Search-bar eliminados) --- */
+
+        /* --- NUEVOS ESTILOS para auth en la izquierda --- */
+        .auth-links-left {
+            display: flex;
+            gap: 10px; /* Espacio entre los dos botones */
+        }
+
+        .auth-btn-left {
+            text-decoration: none;
+            color: #ffffff; /* Color blanco para que se lea en el azul */
+            padding: 8px 16px; /* Más pequeños que los nav-links */
+            border-radius: 16px; /* Bordes redondeados */
+            font-size: 14px; /* Tamaño de letra normal */
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #ffffff; /* Borde blanco */
+        }
+
+        /* Estilo para el botón de "Registrarse" (un poco diferente) */
+        .btn-register-left {
+            background-color: #ffffff; /* Fondo blanco */
+            color: #0000C8; /* Letras azules */
+        }
+
+        /* Efectos hover */
+        .auth-btn-left.btn-login-left:hover {
             background-color: #ffffff;
-            border-radius: 20px;
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #0000C8;
         }
 
-        /* Botón de envío (lupa) */
-        .search-submit-btn {
-            background: none;
-            border: none;
-            padding: 0;
-            margin-right: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
+        .auth-btn-left.btn-register-left:hover {
+            background-color: #f0f0f0;
+            border-color: #f0f0f0;
         }
 
-        .search-submit-btn img {
-            width: 20px;
-            height: 20px;
-            opacity: 0.6; /* Un poco transparente */
-        }
-
-        .search-bar input {
-            border: none;
-            outline: none;
-            font-size: 16px;
-            background: transparent;
-            width: 100%;
-        }
 
         /* --- Navegación Principal --- */
         .main-nav {
             display: flex;
             gap: 12px; /* Espacio entre los botones */
+            align-items: center; /* Centra verticalmente los botones */
         }
 
         .main-nav a {
@@ -109,13 +111,21 @@
             font-size: 14px;
             font-weight: bold;
             transition: all 0.2s ease;
+            white-space: nowrap; /* Evita que el texto se parta en dos líneas */
         }
 
-        /* Efecto al pasar el mouse */
+        /* --- (Estilos de .btn-login y .btn-register eliminados) --- */
+
+        /* --- Efectos Hover --- */
+        
+        /* Efecto al pasar el mouse (botones normales) */
         .main-nav a:hover {
             background-color: #f0f0f0;
             transform: translateY(-2px); /* Se eleva un poquito */
         }
+        
+        /* --- (Estilos de hover para btn-login/register eliminados) --- */
+
 
         /* --- 2. Área de Contenido Principal --- */
         .content-area {
@@ -138,6 +148,7 @@
             padding: 20px;
             margin-bottom: 40px; /* Espacio para que no se pegue al footer azul */
             max-height: 500px;
+            overflow: hidden; /* Para que la imagen no se salga si es muy grande */
         }
 
         .product-showcase img {
@@ -251,25 +262,30 @@
 
             <header class="main-header">
                 
-                <form class="search-bar" action="https://www.google.com/search" method="GET" target="_blank">
-                    <button type="submit" class="search-submit-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm9iZCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Im0yMSAyMS00LjMtNC4zIi8+PC9zdmc+" alt="Buscar">
-                    </button>
-                    <input type="text" placeholder="Buscar..." name="q">
-                </form>
+                <!-- (Barra de búsqueda eliminada) -->
+                
+                <!-- NUEVA UBICACIÓN DE BOTONES -->
+                <div class="auth-links-left">
+                    <a href="login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
+                    <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                </div>
 
                 <nav class="main-nav">
+                    <!-- Links existentes -->
                     <a href="https://www.playstation.com/">comprar</a>
                     <a href="https://www.playstation.com/">reservas</a>
                     <a href="https://www.playstation.com/">catalogo</a>
-                    <a href="https://www.playstation.com/">otros</a>
+                    
+                    <!-- (Botones de autenticación movidos a la izquierda) -->
                 </nav>
             </header>
 
             <main class="content-area">
 
                 <section class="product-showcase">
-                    <img src="15919100847394.jpg" alt="Consola y Control PlayStation 5">
+                    <!-- He reemplazado tu imagen local por un placeholder para que se vea en la vista previa -->
+                    <img src="https://placehold.co/600x450/f8f8f8/cccccc?text=PlayStation+5" alt="Consola y Control PlayStation 5"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x450';">
                 </section>
 
                 <aside class="sidebar-actions">
@@ -280,7 +296,9 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" alt="Logo PlayStation">
                         </a>
                         <a href="https://www.playstation.com/" class="action-btn ps-symbols">
-                            <img src="images.jpg" alt="Símbolos PlayStation">
+                             <!-- He reemplazado tu imagen local por un placeholder -->
+                            <img src="https://placehold.co/300x200/001f54/ffffff?text=PS+Symbols" alt="Símbolos PlayStation"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/300x200';">
                         </a>
                     </div>
                 </aside>
@@ -288,7 +306,7 @@
             </main>
 
             <footer class="main-footer">
-                </footer>
+            </footer>
 
         </div>
 
@@ -298,3 +316,4 @@
 
 </body>
 </html>
+
