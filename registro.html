@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 1. Título cambiado -->
     <title>Registrarse</title>
 
     <style>
@@ -52,6 +51,7 @@
             border-radius: 25px 25px 150px 50px;
             padding: 20px 40px;
             /* CAMBIO: Solo hay un elemento, lo alineamos a la izquierda */
+            display: flex; /* Aseguramos flexbox */
             justify-content: flex-start; 
             align-items: center;
             position: relative;
@@ -219,11 +219,13 @@
             <!-- 2. Contenido Principal (El Formulario de Registro) -->
             <main class="login-area">
                 
-                <form id="registro-form" class="login-form" action="pagina_real.html" method="POST">
+                <!-- CAMBIO: Eliminamos 'action' y 'method' porque lo manejará JS -->
+                <form id="registro-form" class="login-form">
                     
                     <h2>Crea tu Cuenta</h2>
                     
                     <div class="form-group">
+                        <!-- IMPORTANTE: Añadimos un id="nombre" -->
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" required>
                     </div>
@@ -263,5 +265,26 @@
 
     </div>
 
+    <!-- ===== INICIA SCRIPT ===== -->
+    <script>
+        // 1. Busca el formulario por su ID y espera a que el usuario le dé "submit"
+        document.getElementById('registro-form').addEventListener('submit', function(event) {
+            
+            // 2. Evita que el formulario se envíe de la forma tradicional (recargando la página)
+            event.preventDefault();
+            
+            // 3. Obtiene el valor (el texto) que el usuario escribió en el campo "Nombre"
+            const nombreUsuario = document.getElementById('nombre').value;
+            
+            // 4. Guarda ese nombre en la "memoria de la sesión" del navegador
+            sessionStorage.setItem('userName', nombreUsuario);
+            
+            // 5. Redirige al usuario de vuelta a la página principal
+            window.location.href = 'index.html';
+        });
+    </script>
+    <!-- ===== TERMINA SCRIPT ===== -->
+
 </body>
 </html>
+
