@@ -1,1 +1,414 @@
-.
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Satisfacción</title>
+
+    <style>
+        /* --- Configuración General --- */
+        /* Reseteo para que todos los navegadores se vean igual */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo general del cuerpo de la página */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f2f5; /* Fondo gris claro */
+            display: flex; /* Centra el contenido */
+            /* (Cambiado) La barra de búsqueda no está en esta página */
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Alto completo de la pantalla */
+            padding: 2rem; /* Espacio en los bordes */
+        }
+
+        /* --- Contenedor Principal (Todo el diseño) --- */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* --- Tarjeta Blanca Principal --- */
+        .page-container {
+            flex-grow: 1; /* Ocupa el espacio disponible */
+            background-color: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* Sombrita */
+            overflow: hidden; /* Oculta lo que se salga de la tarjeta */
+            display: flex; /* Para organizar el header, main y footer (uno debajo del otro) */
+            flex-direction: column;
+        }
+
+        /* --- 1. Encabezado (La mancha azul) --- */
+        .main-header {
+            background-color: #0000C8; /* Azul intenso */
+            height: 130px;
+            /* La magia para la forma curva */
+            border-radius: 25px 25px 150px 50px;
+            padding: 20px 40px;
+            display: flex; 
+            justify-content: space-between; /* Uno a cada lado */
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Estilos para auth (Izquierda y Derecha) --- */
+        .auth-links-left, .auth-links-right {
+            display: flex;
+            gap: 10px; 
+            align-items: center;
+        }
+
+        .auth-btn-left {
+            text-decoration: none;
+            color: #ffffff; /* Color blanco para que se lea en el azul */
+            padding: 8px 16px; /* Más pequeños que los nav-links */
+            border-radius: 16px; /* Bordes redondeados */
+            font-size: 14px; /* Tamaño de letra normal */
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #ffffff; /* Borde blanco */
+        }
+        
+        /* Estilo para el botón de "Login" o "Volver" (borde blanco) */
+        .btn-login-left {
+             background-color: transparent;
+             color: #ffffff;
+        }
+        
+        .auth-btn-left.btn-login-left:hover {
+            background-color: #ffffff;
+            color: #0000C8;
+        }
+        
+        /* --- ESTILOS DE SESIÓN (Copiados de index.html) --- */
+        .auth-links-right .welcome-message {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+        
+        .auth-btn-left.btn-logout {
+            border-color: #ffbaba;
+            color: #ffbaba;
+            background-color: transparent;
+        }
+
+        .auth-btn-left.btn-logout:hover {
+            background-color: #ffffff;
+            color: #c80000;
+            border-color: #ffffff;
+        }
+        /* --- FIN ESTILOS DE SESIÓN --- */
+
+
+        /* --- 2. Área de Contenido (Formulario de Encuesta) --- */
+        
+        .form-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el formulario */
+            padding: 40px;
+            gap: 20px; /* Espacio entre título y formulario */
+        }
+
+        .form-area h2 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+        }
+        
+        /* Mensaje de éxito (verde) */
+        .success-message {
+            color: #006400; /* Verde oscuro */
+            background-color: #c8e6c9; /* Verde claro */
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+            width: 100%;
+            max-width: 600px; /* Ancho del formulario */
+        }
+        .success-message h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .survey-form {
+            width: 100%;
+            max-width: 600px; /* Formulario un poco más ancho */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Espacio entre los campos */
+        }
+        
+        /* Estilos para grupos de campos (Nombre, Correo, etc.) */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espacio entre label e input */
+        }
+        
+        .form-group label,
+        .form-group legend { /* 'legend' es para los grupos de radio/checkbox */
+            font-weight: bold;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif; /* Hereda la fuente */
+        }
+        
+        .form-group textarea {
+            resize: vertical; /* Permite al usuario ajustar la altura */
+            min-height: 100px;
+        }
+        
+        /* Estilos para Radio buttons y Checkboxes */
+        .form-group-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .form-group-options .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f9f9f9;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .form-group-options input[type="radio"],
+        .form-group-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0000C8; /* Color del "check" */
+        }
+
+        /* Botón de envío */
+        .survey-button {
+            background-color: #0000C8; /* Azul principal */
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .survey-button:hover {
+            background-color: #003087; /* Azul más oscuro */
+        }
+        
+
+        /* --- 3. Footer (El recuadro azul de abajo) --- */
+        .main-footer {
+            background-color: #0000C8;
+            height: 80px;
+            border-radius: 0 0 25px 25px; /* Bordes redondeados solo abajo */
+        }
+
+        /* --- 4. Barra de Scroll Falsa (A la derecha) --- */
+        .scroll-track {
+            width: 12px;
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            height: 600px; /* Altura fija de adorno */
+            margin-left: 20px;
+            align-self: flex-start;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Esta página NO tiene la barra de búsqueda externa -->
+
+    <div class="page-wrapper">
+
+        <div class="page-container">
+
+            <!-- 1. Encabezado (Con botón de Volver y Sesión) -->
+            <header class="main-header">
+                
+                <div class="auth-links-left">
+                    <!-- BOTÓN DE VOLVER -->
+                    <a href="index.html" class="auth-btn-left btn-login-left">← Volver al Inicio</a>
+                </div>
+
+                <!-- CONTENEDOR DE SESIÓN (se rellena con JS) -->
+                <div class="auth-links-right" id="auth-container">
+                    <!-- El script llenará esto -->
+                </div>
+
+            </header>
+
+            <!-- 2. Contenido Principal (El Formulario de Encuesta) -->
+            <main class="form-area">
+                
+                <h2>Encuesta de Satisfacción</h2>
+
+                <!-- Mensaje de éxito (oculto) -->
+                <div id="success-message" class="success-message">
+                    <h3>¡Gracias por tus comentarios!</h3>
+                    <p>Tu opinión es muy importante para nosotros y nos ayuda a mejorar.</p>
+                </div>
+                
+                <form id="survey-form" class="survey-form">
+                    
+                    <!-- Pregunta 1: Selección Radio -->
+                    <fieldset class="form-group-options">
+                        <legend>1. ¿Qué tan satisfecho estás con la navegación de nuestra página?</legend>
+                        <label class="option">
+                            <input type="radio" name="satisfaccion" value="5" required>
+                            Muy Satisfecho
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="satisfaccion" value="3">
+                            Neutral
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="satisfaccion" value="1">
+                            Poco Satisfecho
+                        </label>
+                    </fieldset>
+                    
+                    <!-- Pregunta 2: Selección Checkbox -->
+                    <fieldset class="form-group-options">
+                        <legend>2. ¿Qué buscabas en nuestra página hoy? (Marca todas las que apliquen)</legend>
+                        <label class="option">
+                            <input type="checkbox" name="motivo" value="comprar">
+                            Comprar un producto
+                        </label>
+                        <label class="option">
+                            <input type="checkbox" name="motivo" value="informacion">
+                            Buscar información de PlayStation
+                        </label>
+                        <label class="option">
+                            <input type="checkbox" name="motivo" value="soporte">
+                            Soporte técnico
+                        </label>
+                        <label class="option">
+                            <input type="checkbox" name="motivo" value="curiosidad">
+                            Solo estaba curioseando
+                        </label>
+                    </fieldset>
+
+                    <!-- Pregunta 3: Escrita (Textarea) -->
+                    <div class="form-group">
+                        <label for="juego_favorito">3. ¿Cuál es tu juego o franquicia favorita de PlayStation?</label>
+                        <textarea id="juego_favorito" name="juego_favorito" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    </div>
+
+                    <!-- Pregunta 4: Selección (Dropdown) -->
+                    <div class="form-group">
+                        <label for="frecuencia">4. ¿Con qué frecuencia visitas nuestro sitio?</label>
+                        <select id="frecuencia" name="frecuencia">
+                            <option value="">Selecciona una opción...</option>
+                            <option value="diario">Diariamente</option>
+                            <option value="semanal">Semanalmente</option>
+                            <option value="mensual">Mensualmente</option>
+                            <option value="primera_vez">Es mi primera vez</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Pregunta 5: Escrita (Textarea) -->
+                    <div class="form-group">
+                        <label for="sugerencias">5. ¿Tienes alguna sugerencia para mejorar nuestra página?</label>
+                        <textarea id="sugerencias" name="sugerencias" placeholder="Tus ideas son bienvenidas..."></textarea>
+                    </div>
+
+                    
+                    <button type="submit" class="survey-button">Enviar Encuesta</button>
+                    
+                </form>
+
+            </main>
+
+            <!-- 3. Footer (Idéntico) -->
+            <footer class="main-footer">
+            </footer>
+
+        </div>
+
+        <!-- 4. Barra de Scroll (Idéntica) -->
+        <div class="scroll-track"></div>
+
+    </div>
+
+    <!-- ===== SCRIPT DE SESIÓN (Copiado de compra.html) ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container'); // Apunta al div de la derecha
+            
+            if (userName) {
+                // Si hay sesión, muestra saludo y botón "Salir"
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.href = 'index.html'; // Al salir, vuelve al inicio
+                });
+            } else {
+                // Si no hay sesión, no muestra nada en la derecha
+                authContainer.innerHTML = '';
+            }
+        });
+    </script>
+    <!-- ===== FIN SCRIPT DE SESIÓN ===== -->
+
+    <!-- ===== SCRIPT DEL FORMULARIO DE ENCUESTA ===== -->
+    <script>
+        document.getElementById('survey-form').addEventListener('submit', function(event) {
+            // Evita que la página se recargue
+            event.preventDefault();
+            
+            // Busca el formulario y el mensaje de éxito
+            const form = document.getElementById('survey-form');
+            const successMessage = document.getElementById('success-message');
+            
+            // 1. Muestra el mensaje de éxito
+            successMessage.style.display = 'block';
+            
+            // 2. Oculta el formulario para que solo se vea el mensaje
+            form.style.display = 'none';
+            
+            // 3. Sube la vista al inicio de la página para ver el mensaje
+            window.scrollTo(0, 0);
+        });
+    </script>
+    <!-- ===== FIN SCRIPT DEL FORMULARIO ===== -->
+
+</body>
+</html>
