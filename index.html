@@ -19,7 +19,7 @@
             font-family: Arial, Helvetica, sans-serif;
             background-color: #f0f2f5; /* Fondo gris claro */
             display: flex; /* Centra el contenido */
-            flex-direction: column; /* <-- AÑADIDO: Apila la barra y la tarjeta */
+            flex-direction: column; /* Apila la barra y la tarjeta */
             justify-content: center;
             align-items: center;
             min-height: 100vh; /* Alto completo de la pantalla */
@@ -65,6 +65,7 @@
         /* --- FIN Barra de Búsqueda Externa --- */
 
         /* --- Contenedor Principal (Todo el diseño) --- */
+        /* Envuelve la tarjeta blanca y la barra de scroll falsa */
         .page-wrapper {
             display: flex;
             width: 100%;
@@ -90,16 +91,23 @@
             border-radius: 25px 25px 150px 50px;
             padding: 20px 40px;
             display: flex;
-            justify-content: space-between; /* Uno a la izq (buscador) y otro a la der (links) */
+            justify-content: space-between; /* Uno a la izq (auth) y otro a la der (nav/saludo) */
             align-items: center;
             position: relative;
             z-index: 1;
         }
 
-        /* --- Estilos para auth en la izquierda --- */
+        /* --- Contenedor de links de auth (se llena con JS) --- */
         .auth-links-left {
             display: flex;
             gap: 10px; /* Espacio entre los dos botones */
+        }
+        
+        /* Contenedor DERECHO: Saludo (JS) Y Navegación */
+        .auth-links-right {
+             display: flex;
+             align-items: center;
+             gap: 15px; /* Espacio entre el saludo (si existe) y la nav */
         }
 
         .auth-btn-left {
@@ -125,6 +133,7 @@
              color: #ffffff;
         }
 
+
         /* Efectos hover */
         .auth-btn-left.btn-register-left:hover {
             background-color: #f0f0f0;
@@ -135,30 +144,8 @@
             background-color: #ffffff;
             color: #0000C8;
         }
-        
-        /* --- ESTILOS DE SESIÓN --- */
-        .auth-links-left .welcome-message {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: bold;
-            margin-right: 15px;
-            white-space: nowrap; /* Evita que el nombre se parta */
-        }
-        
-        .auth-btn-left.btn-logout {
-            border-color: #ffbaba; /* Borde rojo claro */
-            color: #ffbaba; /* Texto rojo claro */
-            background-color: transparent;
-        }
 
-        .auth-btn-left.btn-logout:hover {
-            background-color: #ffffff;
-            color: #c80000; /* Rojo oscuro al pasar el mouse */
-            border-color: #ffffff;
-        }
-        /* --- FIN ESTILOS DE SESIÓN --- */
-
-        /* --- Navegación Principal --- */
+        /* --- Navegación Principal (Derecha) --- */
         .main-nav {
             display: flex;
             gap: 12px; /* Espacio entre los botones */
@@ -180,6 +167,28 @@
             background-color: #f0f0f0;
             transform: translateY(-2px); /* Se eleva un poquito */
         }
+        
+        /* --- ESTILOS DE SESIÓN (para saludo y salir) --- */
+        #auth-container-right .welcome-message {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap; /* Evita que el nombre se parta */
+        }
+        
+        .auth-btn-left.btn-logout {
+            border-color: #ffbaba; /* Borde rojo pálido */
+            color: #ffbaba; /* Letras rojo pálido */
+            background-color: transparent;
+        }
+
+        .auth-btn-left.btn-logout:hover {
+            background-color: #ffffff;
+            color: #c80000; /* Letras rojas al pasar el mouse */
+            border-color: #ffffff;
+        }
+        /* --- FIN ESTILOS DE SESIÓN --- */
+
 
         /* --- 2. Área de Contenido Principal --- */
         .content-area {
@@ -202,6 +211,7 @@
             padding: 20px;
             margin-bottom: 40px; /* Espacio para que no se pegue al footer azul */
             max-height: 500px;
+            overflow: hidden; /* Evita que la imagen se desborde en el hover */
         }
 
         .product-showcase img {
@@ -212,6 +222,11 @@
             object-fit: contain; /* Para que la imagen no se corte */
             /* Sombra suave */
             filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease; /* Transición para el hover */
+        }
+        
+        .product-showcase:hover img {
+            transform: scale(1.05); /* Efecto de zoom suave al pasar el mouse */
         }
 
         /* --- Columna Derecha: Botones --- */
@@ -309,7 +324,6 @@
 </head>
 <body>
 
-    <!-- ===== INICIO DE LA MODIFICACIÓN ===== -->
     <!-- Barra de búsqueda pequeña, fuera del cuadro azul -->
     <form class="external-search-bar" action="https://www.google.com/search" method="GET" target="_blank">
         <button type="submit" class="search-submit-btn">
@@ -317,7 +331,6 @@
         </button>
         <input type="text" placeholder="Buscar..." name="q">
     </form>
-    <!-- ===== FIN DE LA MODIFICACIÓN ===== -->
 
     <div class="page-wrapper">
 
@@ -325,45 +338,47 @@
 
             <header class="main-header">
                 
-                <!-- CONTENEDOR DE SESIÓN (se rellena con JS) -->
-                <div class="auth-links-left" id="auth-container">
-                    <!-- Por defecto, muestra esto -->
-                    <a href="login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
-                    <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                <!-- Contenedor de links de auth (se llena con JS) -->
+                <div class="auth-links-left" id="auth-container-left">
+                    <!-- JS pondrá "Iniciar Sesión" y "Registrarse" aquí -->
                 </div>
 
-                <!-- ===== INICIO DE LA MODIFICACIÓN ===== -->
-                <nav class="main-nav" id="main-nav">
-                    <!-- <a href="https://www.playstation.com/">comprar</a> -->
-                    <!-- <a href="https://www.playstation.com/">reservas</a> -->
-                    <!-- <a href="https://www.playstation.com/">catalogo</a> -->
-                    <!-- Enlace actualizado para el nuevo formulario -->
-                    <a href="formulario.html">Formulario</a>
-                </nav>
-                <!-- ===== FIN DE LA MODIFICACIÓN ===== -->
+                <!-- Contenedor DERECHO: Saludo (JS) Y Navegación -->
+                <div class="auth-links-right">
+                    
+                    <!-- A. El saludo (se llena con JS) -->
+                    <div id="auth-container-right">
+                        <!-- JS pondrá "Hola, [Nombre]" y "Salir" aquí -->
+                    </div>
+                    
+                    <!-- B. La navegación (estática) -->
+                    <nav class="main-nav" id="main-nav">
+                        <a href="formulario.html">Formulario</a>
+                        <!-- ===== INICIO DE LA MODIFICACIÓN ===== -->
+                        <a href="https://www.playstation.com/" target="_blank" rel="noopener noreferrer">otros</a>
+                        <!-- ===== FIN DE LA MODIFICACIÓN ===== -->
+                    </nav>
+                </div>
             </header>
 
             <main class="content-area">
 
                 <section class="product-showcase">
-                    <!-- Asegúrate de que esta imagen '15919100847394.jpg' exista en tu carpeta -->
-                    <img src="15919100847394.jpg" alt="Consola y Control PlayStation 5" 
-                         onerror="this.src='https://placehold.co/600x400/f8f8f8/ccc?text=PS5+Image'">
+                    <!-- (Placeholder) Reemplaza esto con tu imagen original -->
+                    <img src="https://placehold.co/600x400/f8f8f8/ccc?text=PS5" alt="Consola y Control PlayStation 5">
                 </section>
 
                 <aside class="sidebar-actions">
-                    
-                    <!-- Este botón ahora apunta a la página de compra -->
+                    <!-- Enlace a la página de compra -->
                     <a href="compra.html" class="buy-now">COMPRA AHORA</a>
                     
                     <div class="action-buttons">
-                        <a href="https://www.playstation.com/" class="action-btn ps-logo">
+                        <a href="https://www.playstation.com/" class="action-btn ps-logo" target="_blank" rel="noopener noreferrer">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" alt="Logo PlayStation">
                         </a>
-                        <a href="https://www.playstation.com/" class="action-btn ps-symbols">
-                            <!-- Asegúrate de que esta imagen 'images.jpg' exista -->
-                            <img src="images.jpg" alt="Símbolos PlayStation"
-                                 onerror="this.src='https... existing code ...'">
+                        <a href="https://www.playstation.com/" class="action-btn ps-symbols" target="_blank" rel="noopener noreferrer">
+                             <!-- (Placeholder) Reemplaza esto con tu imagen original -->
+                            <img src="https://placehold.co/300x150/001f54/ffffff?text=PS+Symbols" alt="Símbolos PlayStation">
                         </a>
                     </div>
                 </aside>
@@ -378,17 +393,20 @@
         <div class="scroll-track"></div>
 
     </div>
-    
+
     <!-- ===== SCRIPT DE SESIÓN ===== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userName = sessionStorage.getItem('userName');
-            const authContainer = document.getElementById('auth-container'); // Apunta al div de la izquierda
-            const mainNav = document.getElementById('main-nav'); // Apunta a la navegación principal
+            const authLeft = document.getElementById('auth-container-left');
+            const authRight = document.getElementById('auth-container-right');
             
             if (userName) {
-                // Si hay sesión, muestra saludo y botón "Salir"
-                authContainer.innerHTML = `
+                // Si hay sesión: Oculta los botones de la izquierda
+                authLeft.innerHTML = ''; 
+                
+                // Muestra saludo y botón "Salir" a la derecha
+                authRight.innerHTML = `
                     <span class="welcome-message">Hola, ${userName.trim()}</span>
                     <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
                 `;
@@ -396,18 +414,21 @@
                 document.getElementById('logout-btn').addEventListener('click', function(e) {
                     e.preventDefault();
                     sessionStorage.removeItem('userName');
-                    window.location.reload(); // Recarga la página para mostrar los botones de login
+                    window.location.reload();
                 });
             } else {
-                // Si no hay sesión, los botones de "Iniciar Sesión" y "Registrarse"
-                // ya están en el HTML por defecto, así que no hacemos nada.
+                // Si no hay sesión: Muestra "Iniciar Sesión" y "Registrarse" a la izquierda
+                authLeft.innerHTML = `
+                    <a href="login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
+                    <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                `;
+                // Deja el contenedor derecho (saludo) vacío
+                authRight.innerHTML = '';
             }
         });
     </script>
-    <!-- ===== TERMINA SCRIPT ===== -->
+    <!-- ===== FIN SCRIPT ===== -->
 
 </body>
 </html>
-
-
 
