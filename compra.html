@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Compra</title>
+
+    <style>
+        /* --- Configuración General --- */
+        /* Reseteo para que todos los navegadores se vean igual */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo general del cuerpo de la página */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f2f5; /* Fondo gris claro */
+            display: flex; /* Centra el contenido */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Alto completo de la pantalla */
+            padding: 2rem; /* Espacio en los bordes */
+        }
+
+        /* --- Contenedor Principal (Todo el diseño) --- */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* --- Tarjeta Blanca Principal --- */
+        .page-container {
+            flex-grow: 1; /* Ocupa el espacio disponible */
+            background-color: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* Sombrita */
+            overflow: hidden; /* Oculta lo que se salga de la tarjeta */
+            display: flex; /* Para organizar el header, main y footer (uno debajo del otro) */
+            flex-direction: column;
+        }
+
+        /* --- 1. Encabezado (La mancha azul) --- */
+        .main-header {
+            background-color: #0000C8; /* Azul intenso */
+            height: 130px;
+            /* La magia para la forma curva */
+            border-radius: 25px 25px 150px 50px;
+            padding: 20px 40px;
+            display: flex; 
+            justify-content: space-between; /* Uno a cada lado */
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Estilos para auth (Izquierda y Derecha) --- */
+        .auth-links-left, .auth-links-right {
+            display: flex;
+            gap: 10px; 
+            align-items: center;
+        }
+
+        .auth-btn-left {
+            text-decoration: none;
+            color: #ffffff; /* Color blanco para que se lea en el azul */
+            padding: 8px 16px; /* Más pequeños que los nav-links */
+            border-radius: 16px; /* Bordes redondeados */
+            font-size: 14px; /* Tamaño de letra normal */
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 2px solid #ffffff; /* Borde blanco */
+        }
+
+        /* Estilo para el botón de "Registrarse" (un poco diferente) */
+        .btn-register-left {
+            background-color: #ffffff; /* Fondo blanco */
+            color: #0000C8; /* Letras azules */
+        }
+        
+        /* Estilo para el botón de "Login" o "Volver" (borde blanco) */
+        .btn-login-left {
+             background-color: transparent;
+             color: #ffffff;
+        }
+
+        /* Efectos hover */
+        .auth-btn-left.btn-register-left:hover {
+            background-color: #f0f0f0;
+            border-color: #f0f0f0;
+        }
+        
+        .auth-btn-left.btn-login-left:hover {
+            background-color: #ffffff;
+            color: #0000C8;
+        }
+        
+        /* --- ESTILOS DE SESIÓN (Copiados de index.html) --- */
+        .auth-links-right .welcome-message {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+        
+        .auth-btn-left.btn-logout {
+            border-color: #ffbaba;
+            color: #ffbaba;
+            background-color: transparent;
+        }
+
+        .auth-btn-left.btn-logout:hover {
+            background-color: #ffffff;
+            color: #c80000;
+            border-color: #ffffff;
+        }
+        /* --- FIN ESTILOS DE SESIÓN --- */
+
+
+        /* --- 2. Área de Contenido (Formulario de Compra) --- */
+        
+        .form-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el formulario */
+            padding: 40px;
+            gap: 20px; /* Espacio entre título y formulario */
+        }
+
+        .form-area h2 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+        }
+        
+        /* Mensaje de éxito (verde) */
+        .success-message {
+            color: #006400; /* Verde oscuro */
+            background-color: #c8e6c9; /* Verde claro */
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+            width: 100%;
+            max-width: 600px; /* Ancho del formulario */
+            border: 1px solid #a5d6a7; /* Borde verde */
+        }
+        
+        .success-message h3 {
+            font-size: 24px;
+            color: #004d00;
+            margin-bottom: 15px;
+        }
+        
+        .success-message p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .success-message p:last-of-type {
+            margin-bottom: 25px; /* Más espacio antes del botón */
+        }
+
+        .success-message .back-to-home-btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #0000C8; /* Azul principal */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .success-message .back-to-home-btn:hover {
+            background-color: #003087; /* Azul más oscuro */
+        }
+
+        .compra-form {
+            width: 100%;
+            max-width: 600px; /* Formulario un poco más ancho */
+            display: flex;
+            flex-direction: column;
+            gap: 18px; /* Espacio entre los campos */
+        }
+        
+        /* Estilos para grupos de campos (Nombre, Correo, etc.) */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Espacio entre label e input */
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif; /* Hereda la fuente */
+        }
+        
+        .form-group textarea {
+            resize: vertical; /* Permite al usuario ajustar la altura */
+            min-height: 80px;
+        }
+
+        /* Estilo para campos en la misma línea (Ej. Tarjeta) */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1; /* Ocupa el espacio disponible equitativamente */
+        }
+
+        /* Estilos para Radio buttons y Checkboxes */
+        .form-group-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-group-options .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f9f9f9;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+        
+        .form-group-options input[type="radio"],
+        .form-group-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0000C8; /* Color del "check" */
+        }
+
+        /* Botón de compra */
+        .compra-button {
+            background-color: #0000C8; /* Azul principal */
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .compra-button:hover {
+            background-color: #003087; /* Azul más oscuro */
+        }
+        
+
+        /* --- 3. Footer (El recuadro azul de abajo) --- */
+        .main-footer {
+            background-color: #0000C8;
+            height: 80px;
+            border-radius: 0 0 25px 25px; /* Bordes redondeados solo abajo */
+        }
+
+        /* --- 4. Barra de Scroll Falsa (A la derecha) --- */
+        .scroll-track {
+            width: 12px;
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            height: 600px; /* Altura fija de adorno */
+            margin-left: 20px;
+            align-self: flex-start;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+
+        <div class="page-container">
+
+            <!-- 1. Encabezado (Con botón de Volver y Sesión) -->
+            <header class="main-header">
+                
+                <div class="auth-links-left">
+                    <!-- BOTÓN DE VOLVER -->
+                    <a href="index.html" class="auth-btn-left btn-login-left">← Volver al Inicio</a>
+                </div>
+
+                <!-- CONTENEDOR DE SESIÓN (se rellena con JS) -->
+                <div class="auth-links-right" id="auth-container">
+                    <!-- Por defecto, muestra esto (si JS falla o no hay sesión) -->
+                    <a href="login.html" class="auth-btn-left btn-login-left">Iniciar Sesión</a>
+                    <a href="registro.html" class="auth-btn-left btn-register-left">Registrarse</a>
+                </div>
+
+            </header>
+
+            <!-- 2. Contenido Principal (El Formulario de Compra) -->
+            <main class="form-area">
+                
+                <h2>Proceso de Compra</h2>
+
+                <!-- Mensaje de éxito (oculto) -->
+                <div id="success-message" class="success-message">
+                    <h3>¡Compra Confirmada!</h3>
+                    <p>Hemos enviado los detalles de su pedido y la información de entrega a su correo electrónico.</p>
+                    <p>Gracias por su preferencia.</p>
+                    <a href="index.html" class="back-to-home-btn">Volver al Inicio</a>
+                </div>
+                
+                <form id="compra-form" class="compra-form">
+                    
+                    <!-- Sección 1: Producto -->
+                    <div class="form-group">
+                        <label>1. Elige tu consola:</label>
+                        <div class="form-group-options">
+                            <label class="option">
+                                <input type="radio" name="consola" value="ps5" checked>
+                                PlayStation 5 (Edición Estándar)
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="consola" value="ps5_digital">
+                                PlayStation 5 (Edición Digital)
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="consola" value="ps4_pro">
+                                PlayStation 4 Pro (Reacondicionada)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 2: Datos Personales -->
+                    <div class="form-group">
+                        <label for="nombre">2. Nombre Completo:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre y apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">3. Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+                    </div>
+
+                    <!-- Sección 3: Envío -->
+                    <div class="form-group">
+                        <label for="direccion">4. Dirección de Envío:</label>
+                        <textarea id="direccion" name="direccion" placeholder="Calle, número, apartamento..." required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad:</label>
+                            <input type="text" id="ciudad" name="ciudad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">Código Postal:</label>
+                            <input type="text" id="zip" name="zip" required>
+                        </div>
+                    </div>
+
+                    <!-- Sección 4: Pago (Simulación) -->
+                    <div class="form-group">
+                        <label>5. Información de Pago (Simulación):</label>
+                        <input type="text" id="tarjeta-nombre" name="tarjeta-nombre" placeholder="Nombre en la tarjeta" required>
+                        <input type="text" id="tarjeta-num" name="tarjeta-num" placeholder="Número de la tarjeta" required>
+                        <div class="form-row">
+                            <input type="text" id="tarjeta-exp" name="tarjeta-exp" placeholder="MM/AA" required>
+                            <input type="text" id="tarjeta-cvv" name="tarjeta-cvv" placeholder="CVV" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 5: Extras -->
+                    <div class="form-group">
+                        <label>6. ¿Añadir extras?</label>
+                        <div class="form-group-options">
+                            <label class="option">
+                                <input type="checkbox" name="extra" value="control">
+                                Control DualSense Adicional
+                            </label>
+                            <label class="option">
+                                <input type="checkbox" name="extra" value="garantia">
+                                Garantía Extendida (+2 años)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sección 6: Términos -->
+                    <div class="form-group-options">
+                        <label class="option">
+                            <input type="checkbox" id="terminos" name="terminos" required>
+                            Acepto los términos y condiciones del servicio.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="compra-button">Confirmar Compra</button>
+                    
+                </form>
+
+            </main>
+
+            <!-- 3. Footer (Idéntico) -->
+            <footer class="main-footer">
+            </footer>
+
+        </div>
+
+        <!-- 4. Barra de Scroll (Idéntica) -->
+        <div class="scroll-track"></div>
+
+    </div>
+
+    <!-- ===== SCRIPT DE SESIÓN (Copiado de index.html) ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container'); // Apunta al div de la derecha
+            
+            if (userName) {
+                // Si hay sesión, muestra saludo y botón "Salir"
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn-left btn-logout">Salir</a>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                // Si no hay sesión, ya no mostramos los botones de Login/Registro
+                // Dejamos el contenedor vacío
+                authContainer.innerHTML = ``;
+            }
+        });
+    </script>
+    <!-- ===== FIN SCRIPT DE SESIÓN ===== -->
+
+    <!-- ===== SCRIPT DEL FORMULARIO DE COMPRA ===== -->
+    <script>
+        document.getElementById('compra-form').addEventListener('submit', function(event) {
+            // Evita que la página se recargue
+            event.preventDefault();
+            
+            // Busca el formulario y el mensaje de éxito
+            const form = document.getElementById('compra-form');
+            const successMessage = document.getElementById('success-message');
+            
+            // 1. Muestra el mensaje de éxito
+            successMessage.style.display = 'block';
+            
+            // 2. Oculta el formulario para que solo se vea el mensaje
+            form.style.display = 'none';
+            
+            // 3. (Opcional) Sube la vista al inicio de la página para ver el mensaje
+            window.scrollTo(0, 0);
+            
+            // 4. (Opcional) Resetea el formulario y lo vuelve a mostrar después de 5 segundos
+            
+            /* --- INICIO DE LA MODIFICACIÓN --- */
+            // El siguiente bloque "setTimeout" ha sido comentado
+            // para que el mensaje de éxito se quede estático.
+            /*
+            setTimeout(() => {
+                successMessage.style.display = 'none'; // Oculta el mensaje
+                form.style.display = 'flex'; // Muestra el formulario
+                form.reset(); // Limpia los campos
+            }, 5000); // 5000 milisegundos = 5 segundos
+            */
+            /* --- FIN DE LA MODIFICACIÓN --- */
+        });
+    </script>
+    <!-- ===== FIN SCRIPT DEL FORMULARIO ===== -->
+
+</body>
+</html>
+
+
+
